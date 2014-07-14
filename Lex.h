@@ -1,3 +1,7 @@
+#ifndef LEXHEADER
+#define LEXHEADER
+
+
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -44,3 +48,5 @@ class Lexer
 			int Lex(std::string content);
 			void AddLexeme(int type, std::string value);
 };
+
+#endif

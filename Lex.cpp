@@ -3,23 +3,16 @@
 #include <sstream>
 #include <cctype>
 
-using namespace std;
-
-
-
-
 int main(int argc, char** argv)
 {
-	Lexer* lexer = new Lexer();
-	lexer->LexFile("test.yail");
-	lexer->PrintLexemes();
+	Lexer lexer;
+	lexer.LexFile("test.yail");
+	lexer.PrintLexemes();
 }
-
 
 /*********************
  * Lexeme Code
  *********************/
-
 
 Lexeme::Lexeme(int type, std::string* value)
 {
@@ -38,38 +31,38 @@ Lexeme::~Lexeme()
 
 Lexer::Lexer()
 {
-
+	/* Nothing to do here at the moment */
 }
 
-void Lexer::LexFile(string filename)
+void Lexer::LexFile(std::string filename)
 {
-	ifstream file;
+	std::ifstream file;
 	file.open(filename.c_str());
 	
 	if(file.is_open())
 	{
-		stringstream buffer;
+		std::stringstream buffer;
 		buffer << file.rdbuf();
 		Lex(buffer.str());
 	}
 	else
-		cout << "Error opening file" << filename << "\n";
+		std::cout << "Error opening file" << filename << "\n";
 
 	file.close();
 }
 
 void Lexer::PrintLexemes()
 {
-	cout << "Lexer Output:\n";
-	for(vector<Lexeme*>::iterator i = lexemes.begin(); i != lexemes.end(); ++i)
+	std::cout << "Lexer Output:\n";
+	for(std::vector<Lexeme*>::iterator i = lexemes.begin(); i != lexemes.end(); ++i)
 	{
 		Lexeme* l = *i;
-		cout << *l->value << "\n";
+		std::cout << *l->value << "\n";
 	}
-	cout << "\n";
+	std::cout << "\n";
 }
 
-int Lexer::Lex(string content)
+int Lexer::Lex(std::string content)
 {
 	unsigned int current = 0;
 	while(current < content.length())
@@ -139,9 +132,9 @@ int Lexer::Lex(string content)
 	return 0;
 }
 
-void Lexer::AddLexeme(int type, string value)
+void Lexer::AddLexeme(int type, std::string value)
 {
-	string* v = new string(value);
+	std::string* v = new std::string(value);
 	Lexeme* l = new Lexeme(type, v);
 	lexemes.push_back(l);
 }

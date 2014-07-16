@@ -3,26 +3,23 @@
 #include <sstream>
 #include <cctype>
 
+/*
 int main(int argc, char** argv)
 {
 	Lexer lexer;
 	lexer.LexFile("test.yail");
 	lexer.PrintLexemes();
 }
+*/
 
 /*********************
  * Lexeme Code
  *********************/
 
-Lexeme::Lexeme(int type, std::string* value)
+Lexeme::Lexeme(LexemeType type, std::string value)
 {
 	this->type = type;
 	this->value = value;
-}
-
-Lexeme::~Lexeme()
-{
-	delete value;
 }
 
 /*********************
@@ -54,10 +51,11 @@ void Lexer::LexFile(std::string filename)
 void Lexer::PrintLexemes()
 {
 	std::cout << "Lexer Output:\n";
-	for(std::vector<Lexeme*>::iterator i = lexemes.begin(); i != lexemes.end(); ++i)
+	int k = 0;
+	for(auto i = lexemes.begin(); i != lexemes.end()-2; i++, ++k)
 	{
-		Lexeme* l = *i;
-		std::cout << *l->value << "\n";
+		Lexeme l = *i;
+		std::cout << k << ": " << l.value << "\n";
 	}
 	std::cout << "\n";
 }
@@ -77,32 +75,32 @@ int Lexer::Lex(std::string content)
 
 		switch(currentChar)
 		{
-			case '\0': AddLexeme(EOI, "\0"); current++; break;
-			case ';':  AddLexeme(SEMI, ";"); current++; break; 
-			case '+':  AddLexeme(PLUS, "+"); current++; break;
-			case '-':  AddLexeme(MINUS, "-"); current++; break;
-			case '*':  AddLexeme(TIMES, "*"); current++; break;
-			case '/':  AddLexeme(DIV, "/"); current++; break;
-			case '(':  AddLexeme(LP, "("); current++; break;
-			case ')':  AddLexeme(RP, ")"); current++; break;
-			case '{':  AddLexeme(LCP, "{"); current++; break;
-			case '}':  AddLexeme(RCP, "}"); current++; break;
-			case '=':  AddLexeme(EQ, "="); current++; break;
-			case '<':  AddLexeme(LT, "<"); current++; break;
-			case '>':  AddLexeme(GT, ">"); current++; break;
+				case '\0': AddLexeme(LexemeType::EOI, "\0"); current++; break;
+				case ';':  AddLexeme(LexemeType::SEMI, ";"); current++; break; 
+				case '+':  AddLexeme(LexemeType::PLUS, "+"); current++; break;
+				case '-':  AddLexeme(LexemeType::MINUS, "-"); current++; break;
+				case '*':  AddLexeme(LexemeType::TIMES, "*"); current++; break;
+				case '/':  AddLexeme(LexemeType::DIV, "/"); current++; break;
+				case '(':  AddLexeme(LexemeType::LP, "("); current++; break;
+				case ')':  AddLexeme(LexemeType::RP, ")"); current++; break;
+				case '{':  AddLexeme(LexemeType::LCP, "{"); current++; break;
+				case '}':  AddLexeme(LexemeType::RCP, "}"); current++; break;
+				case '=':  AddLexeme(LexemeType::EQ, "="); current++; break;
+				case '<':  AddLexeme(LexemeType::LT, "<"); current++; break;
+				case '>':  AddLexeme(LexemeType::GT, ">"); current++; break;
 			case '\n':
 			case '\t':
 			case ' ': current++; break;	
 			default:
 				if(!content.compare(current * sizeof(char), 2 * sizeof(char), "if"))
 				{
-					AddLexeme(IF, "if");
+					AddLexeme(LexemeType::IF, "if");
 					current+=2;
 					break;
 				}
 				else if(!content.compare(current * sizeof(char), 2 * sizeof(char), "while"))
 				{
-					AddLexeme(IF, "while");
+					AddLexeme(LexemeType::WHI, "while");
 					current += 5;
 					break;
 				}
@@ -115,7 +113,7 @@ int Lexer::Lex(std::string content)
 						current++; llen++;
 						currentChar=content[current];
 					}
-					AddLexeme(VAR, content.substr(current-llen, llen));
+					AddLexeme(LexemeType::VAR, content.substr(current-llen, llen));
 					break;
 				}	
 				if(isdigit(currentChar))
@@ -125,16 +123,16 @@ int Lexer::Lex(std::string content)
 						current++; llen++;
 						currentChar=content[current];
 					}
-					AddLexeme(NUM, content.substr(current-llen, llen));
+					AddLexeme(LexemeType::NUM, content.substr(current-llen, llen));
 				}
 			}
 	}
 	return 0;
 }
 
-void Lexer::AddLexeme(int type, std::string value)
+void Lexer::AddLexeme(LexemeType type, std::string value)
 {
-	std::string* v = new std::string(value);
-	Lexeme* l = new Lexeme(type, v);
+	std::string v = std::string(value);
+	Lexeme l = Lexeme(type, v);
 	lexemes.push_back(l);
 }

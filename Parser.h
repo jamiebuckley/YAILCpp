@@ -22,12 +22,13 @@ class Parser
 	public:
 		void ParseFile(std::string filename);
 		void Print();
+		std::vector<std::shared_ptr<ASTNode>>& getStatements();
 
 	private:
 		Lexer lexer;
 		unsigned int current;
-
 		std::vector<std::shared_ptr<ASTNode>> statements;
+
 		void PrintNode(const std::shared_ptr<ASTNode>& thisNode, int numTabs);
 		void Statements();
 		std::shared_ptr<ASTNode> Statement();

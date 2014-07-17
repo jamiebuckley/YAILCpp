@@ -1,10 +1,12 @@
 #include "Parser.h"
 
+/*
 int main(int argc, char** argv)
 {
 	Parser parser;
 	parser.ParseFile("test.yail");
 }
+*/
 
 ASTNode::ASTNode(LexemeType type, std::string value)
 {
@@ -274,4 +276,9 @@ void Parser::Advance()
 Lexeme Parser::getLex()
 {
 	return lexer.lexemes[current];
+}
+
+std::vector<std::shared_ptr<ASTNode>>& Parser::getStatements()
+{
+	return statements;
 }

@@ -1,7 +1,7 @@
 CC=g++
 CFLAGS=-c -std=c++0x -Wall
 LDFLAGS=
-SOURCES=Lex.cpp Parser.cpp
+SOURCES=Lex.cpp Parser.cpp ILC.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 	EXECUTABLE=YAIL2
 

@@ -7,11 +7,6 @@
 #include "Parser.h"
 #include "Lex.h"
 
-enum class StatementType
-{
-
-};
-
 class VariableInfo
 {
 	public:
@@ -22,6 +17,7 @@ class VariableInfo
 class ILCLine
 {
 	public:
+	void PrintLine();	
 	int lineNumber;	
 	LexemeType operation;
 	std::string operand0;
@@ -34,6 +30,7 @@ class ILCGenerator
 	public:
 		ILCGenerator();
  		void GenerateILC(Parser parser);
+		void PrintILC();
 		std::shared_ptr<ILCLine> TranslateStatement(const std::shared_ptr<ASTNode>& astNode);
 		std::shared_ptr<ILCLine> HandleVAR(const std::shared_ptr<ASTNode>& astNode);
 		std::shared_ptr<ILCLine> HandleASSIGN(const std::shared_ptr<ASTNode>& astNode);
@@ -41,8 +38,10 @@ class ILCGenerator
 		std::shared_ptr<ILCLine> HandleLOOP(const std::shared_ptr<ASTNode>& astNode);
 
 	private:
-		int nextTemp();
+		std::string nextTemp();
+		int nextLine();
 		int temporary;
+		int line;
 
 		std::map<std::string, std::shared_ptr<VariableInfo>> VTable;
 		std::vector<std::shared_ptr<ILCLine>> ilcList;

@@ -5,11 +5,15 @@
 #include <fstream>
 #include <vector>
 
+const std::string LexemeTypeName[] = {"EOI", "SEMI", "PLUS", "MINUS", "TIMES", "DIV",
+											"LP", "RP", "LCP", "RCP", "DO", "WHI", "IF", "NUM",
+											"VAR", "EQ", "LT", "GT", "JUMP", "JUMPIF"};
+
 enum class LexemeType
 {
 EOI, SEMI, PLUS, MINUS, TIMES, DIV,
 LP, RP, LCP, RCP, DO, WHI, IF, NUM,
-VAR, EQ, LT, GT
+VAR, EQ, LT, GT, JUMP, JUMPIF
 };
 
 class Lexeme
